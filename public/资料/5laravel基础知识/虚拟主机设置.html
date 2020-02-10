@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html class="theme theme-white">
+<head>
+<meta charset="utf-8">
+<title>虚拟主机设置</title>
+<link href="https://www.zybuluo.com/static/assets/template-theme-white.css" rel="stylesheet" media="screen">
+<style type="text/css">
+
+#wmd-preview h1  {
+    color: #0077bb; /* 将标题改为蓝色 */
+}</style>
+</head>
+<body class="theme theme-white">
+<div id="wmd-preview" class="wmd-preview wmd-preview-full-reader"><div class="md-section-divider"></div><div class="md-section-divider"></div><h1 data-anchor-id="tzkr" id="虚拟主机设置">虚拟主机设置</h1><p data-anchor-id="m3m6"><code>服务器</code></p><hr><p data-anchor-id="qc5d">在我们开发中通过虚拟域名来访问一个指定的项目确实很方便，接下来教大家如何通过手动的方式去配置虚拟域名(已apache服务器为例)</p><p data-anchor-id="o8x9">一、首页我们得找到host文件、windows下这个文件在c盘中WINDOWS\system32\drivers\etc\hosts中 加入如下内容：</p><p data-anchor-id="m1mz">127.0.0.1 blog.com <br>
+本地ip 虚拟域名</p><p data-anchor-id="3xxm">二、然后咱们得去找httpd.conf文件、这个文件相应位置在您web服务器安装的目录下/\apache\conf\httpd.conf ， 找到 “Include conf/extra/httpd-vhosts.conf 如果前面有# 则需要把它删掉</p><p data-anchor-id="mixb">三、找到httpd-vhosts.conf文件 <br>
+ <br>
+ ServerAdmin webmaster@dummy-host2.example.com <br>
+ DocumentRoot "E:/bd/ems" //这个为您的项目目录 意思就是把虚拟域名绑定到这个目录下 <br>
+ServerName blog.com //这个为您在host中配置 也就是虚拟域名 <br>
+ErrorLog "logs/dummy-host2.example.com-error.log" // 错误日志文件 <br>
+CustomLog "logs/dummy-host2.example.com-access.log" common <br>
+  </p><p data-anchor-id="5j6i">然后重启服务器访问blog.com就可以访问你的项目了</p><p data-anchor-id="8r75">备注:如果返回重启不了，你查看错误日志，根据提示来解决。</p></div>
+</body>
+</html>
