@@ -1,1 +1,2 @@
-sss
+@extends('admin.layouts.admin')
+

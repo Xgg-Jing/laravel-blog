@@ -121,6 +121,21 @@ class UserController extends Controller
         $input = $request->all();
 
 //        2. 进行表单验证
+        $user=User::wehre('user_name',$input['username'])->first();
+        if ($user->user_name == $input['username']){
+            $data = [
+                'status'=>2,
+                'message'=>'用户名已存在'
+            ];
+
+        }
+        if ($user->email == $input['email']){
+            $data = [
+                'status'=>3,
+                'message'=>'邮箱已存在'
+            ];
+
+        }
 
 //        3. 添加到数据库的user表
         $username = $input['email'];
