@@ -27,6 +27,9 @@
                 <div class="layui-input-inline">
                     <input type="text" id="L_username" name="username" required="" lay-verify="nikename"
                            autocomplete="off" class="layui-input"></div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>将会成为您唯一的登入名
+                </div>
             </div>
             <div class="layui-form-item">
                 <label for="L_email" class="layui-form-label">
@@ -34,11 +37,16 @@
                 <div class="layui-input-inline">
                     <input type="text" id="L_email" name="email" required="" lay-verify="email" autocomplete="off"
                            class="layui-input"></div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="x-red">*</span>将会成为您唯一的登入名
+
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="x-red">*</span>角色</label>
+                <div class="layui-input-block">
+                    @foreach($role as $v)
+                        <input type="checkbox"  name="role_id[]" lay-skin="primary" title="{{$v->role_name}}" value="{{$v->id}}">
+                    @endforeach
                 </div>
             </div>
-
             <div class="layui-form-item">
                 <label for="L_pass" class="layui-form-label">
                     <span class="x-red">*</span>密码</label>

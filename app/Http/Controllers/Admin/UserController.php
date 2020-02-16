@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Model\Role;
 use App\Model\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -28,8 +30,20 @@ class UserController extends Controller
                     $query->where('email','like','%'.$email.'%');
                 }
             })->paginate($request->input('num')?$request->input('num'):3);
+//         = Role::get();
+
+        foreach($user as $key => $value){
+            $user_role = $value->role;
+            $role='';
+            foreach ($user_role as $v){
+                $role .=$v->role_name.'|';
+            }
+            $roles[$value->user_id]=$role;
+        }
+
+
 //        $user = User::paginate(10);
-        return view('admin.user.list',compact('user','request'));
+        return view('admin.user.list',compact('user','request','roles'));
     }
 
     /**
@@ -40,7 +54,9 @@ class UserController extends Controller
     public function create()
     {
         //1
-        return view('admin.user.create');
+
+        $role =Role::get();
+        return view('admin.user.create',compact('role'));
     }
 
     /**
@@ -53,6 +69,7 @@ class UserController extends Controller
     {
         //1.接收前台数据
         $input = $request->all();
+
 
         //2.验证
         if (User::where('user_name',$input['username'])->first()){
@@ -72,11 +89,22 @@ class UserController extends Controller
 
         }
         //3.保存到数据库
+
+
         $username = $input['username'];
         $email = $input['email'];
         $pass =Crypt::encrypt($input['pass']);
 
+
+
         $res = User::create(['user_name'=>$username,'user_pass'=>$pass,'email'=>$email]);
+
+        //保存角色
+        if (!empty($request->role_id)){
+            foreach ($request->role_id as $v){
+                DB::table('user_role')->insert(['user_id'=> $res->user_id ,'role_id' => $v  ]);
+            }
+        }
         //4.返回前台需要的值
         if ($res){
             $data=[
@@ -115,7 +143,18 @@ class UserController extends Controller
     {
         //
         $user=User::find($id);
-        return view('admin.user.edit',compact('user'));
+
+        $role =Role::get();
+
+        //用户拥有角色的id
+        $user_role = $user->role;
+        $user_roles=[];
+
+        foreach ($user_role as $v){
+            $user_roles[]=$v->id;
+        }
+
+        return view('admin.user.edit',compact('user','role','user_roles'));
     }
 
     /**
@@ -127,9 +166,21 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $user = User::find($id);
         $user->user_name = $request->username;
         $user->email =$request->email;
+
+        //删除当前用户已有角色
+        DB::table('user_role')->where('user_id',$request->id)->delete();
+
+        //添加新角色
+        if (!empty($request->role_id)){
+            foreach ($request->role_id as $v){
+                DB::table('user_role')->insert(['user_id'=> $request->id ,'role_id' => $v  ]);
+            }
+        }
+
         if ($user->save()){
             $data=[
                 'status' => 0,
@@ -184,5 +235,12 @@ class UserController extends Controller
         }
 
         return $data;
+    }
+
+    //用户统计
+    public function welcome(){
+
+
+        return view('admin.user.userWelcome') ;
     }
 }

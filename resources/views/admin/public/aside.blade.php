@@ -8,7 +8,7 @@
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('统计页面','welcome1.html')">
+                        <a onclick="xadmin.add_tab('统计页面','{{url('admin/userWelcome')}}')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>统计页面</cite></a>
                     </li>
@@ -22,28 +22,25 @@
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>用户添加</cite></a>
                     </li>
+
+
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe70b;</i>
+                    <cite>角色管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('会员删除','member-del.html')">
+                        <a onclick="xadmin.add_tab('角色列表','{{url('admin/role')}}')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>会员删除</cite></a>
+                            <cite>角色列表</cite></a>
                     </li>
                     <li>
-                        <a href="javascript:;">
-                            <i class="iconfont">&#xe70b;</i>
-                            <cite>会员管理</cite>
-                            <i class="iconfont nav_right">&#xe697;</i></a>
-                        <ul class="sub-menu">
-                            <li>
-                                <a onclick="xadmin.add_tab('会员删除','member-del.html')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>会员删除</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('等级管理','member-list1.html')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>等级管理</cite></a>
-                            </li>
-                        </ul>
+                        <a onclick="xadmin.add_tab('添加角色','{{url('admin/role/create')}}')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>添加角色</cite></a>
                     </li>
                 </ul>
             </li>
@@ -98,22 +95,18 @@
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('管理员列表','admin-list.html')">
+                        <a onclick="xadmin.add_tab('管理员列表','{{url('admin/user')}}')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>管理员列表</cite></a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('角色管理','admin-role.html')">
+                        <a onclick="xadmin.add_tab('角色管理','{{url('admin/role')}}')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>角色管理</cite></a>
                     </li>
+
                     <li>
-                        <a onclick="xadmin.add_tab('权限分类','admin-cate.html')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>权限分类</cite></a>
-                    </li>
-                    <li>
-                        <a onclick="xadmin.add_tab('权限管理','admin-rule.html')">
+                        <a onclick="xadmin.add_tab('权限管理','{{url('admin/permission')}}')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>权限管理</cite></a>
                     </li>

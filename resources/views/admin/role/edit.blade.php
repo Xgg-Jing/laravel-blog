@@ -23,50 +23,26 @@
         <form class="layui-form">
             <div class="layui-form-item">
                 <label for="L_username" class="layui-form-label">
-                    <span class="x-red">*</span>用户名</label>
+                    <span class="x-red">*</span>角色</label>
                 <div class="layui-input-inline">
-                    <input type="text" hidden value="{{$user->user_id}}" name="id">
-                    <input type="text" id="L_username" name="username" required="" lay-verify="username"
-                           autocomplete="off" class="layui-input" value="{{$user->user_name}}"></div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="x-red">*</span>将会成为您唯一的登入名
-                </div>
+                    <input type="text" hidden value="{{$role->id}}" name="id">
+                    <input type="text" id="L_username" name="role_name" required="" lay-verify="username"
+                           autocomplete="off" class="layui-input" value="{{$role->role_name}}"></div>
             </div>
             <div class="layui-form-item">
                 <label for="L_email" class="layui-form-label">
-                    <span class="x-red">*</span>邮箱</label>
+                    <span class="x-red">*</span>描述</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_email" name="email" required="" lay-verify="email" autocomplete="off"
-                           class="layui-input" value="{{$user->email}}"></div>
+                    <input type="text" id="L_email" name="role_info" required=""  autocomplete="off"
+                           class="layui-input" value="{{$role->role_info}}"></div>
 
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label"><span class="x-red">*</span>角色</label>
                 <div class="layui-input-block">
-                  @foreach($role as $v)
-                    <input type="checkbox" @if(in_array($v->id,$user_roles)) checked @endif name="role_id[]" lay-skin="primary" title="{{$v->role_name}}" value="{{$v->id}}">
+                    @foreach($per as $v)
+                        <input type="checkbox" @if(in_array($v->id,$role_pers)) checked @endif name="per_id[]" lay-skin="primary" title="{{$v->per_name}}" value="{{$v->id}}">
                     @endforeach
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label for="L_pass" class="layui-form-label">
-                    修改密码
-                </label>
-                <div class="layui-input-inline">
-                    <input type="password" id="L_pass" name="pass" required="" lay-verify="pass"
-                           autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-form-mid layui-word-aux">
-                    6到16个字符
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label for="L_repass" class="layui-form-label">
-                    确认密码
-                </label>
-                <div class="layui-input-inline">
-                    <input type="password" id="L_repass" name="repass" required="" lay-verify="repass"
-                           autocomplete="off" class="layui-input">
                 </div>
             </div>
 
@@ -105,7 +81,7 @@
                     //发异步，把数据提交给php
 
                     $.ajax({
-                        url: '{{url('admin/user')}}'+ '/' +id,
+                        url: '{{url('admin/role')}}'+ '/' +id,
                         type: 'put',
                         dataType: 'json',
                         headers: {

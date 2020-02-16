@@ -51,7 +51,18 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => 'isLog
     //用户相关路由
     Route::resource('user','UserController');
 
-    //批量删除路由
+    //批量删除用户路由
     Route::post('user/del','UserController@delAll');
 
+    //用户统计
+    Route::get('userWelcome','UserController@welcome');
+
+    //用户角色相关路由
+    Route::resource('role','RoleController');
+
+    //批量删除用户路由
+    Route::post('role/del','RoleController@delAll');
+
+    //用户角色相关路由
+    Route::resource('permission','PermissionController');
 });
