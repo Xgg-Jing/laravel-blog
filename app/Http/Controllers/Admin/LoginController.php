@@ -95,7 +95,24 @@ class LoginController extends Controller
         }
 
         //4.保存用户信息到session中
+        //获取当前用户拥有的权限
+
+        $roles = $user->role;
+
+        $per_url =[];
+        foreach($roles as $value){
+            $per = $value->permission;
+            foreach ($per as $v){
+                $per_url[] = $v->per_url;
+            }
+        }
+
+        //去掉重复的权限
+
+        $per_url = array_unique($per_url);
+
         session()->put('user',$user);
+        session()->put('per_url',$per_url);
 
 
         //5.跳转到后台首页

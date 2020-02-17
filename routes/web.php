@@ -38,7 +38,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
 
 });
 
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => 'isLogin'], function () {
+    //没有权限页面
+    Route::get('noaccess','Admin\IndexController@noaccess');
+
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => ['isLogin',]], function () {
     //后台首页
     Route::get('index','IndexController@index');
 
@@ -65,4 +68,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => 'isLog
 
     //用户角色相关路由
     Route::resource('permission','PermissionController');
+
+    //分类相关路由
+    Route::resource('cate','CateController');
+
+    //添加子类
+    Route::get('cate/create/{id}','CateController@create');
+
+    //批量删除分类路由
+    Route::post('cate/del','CateController@delAll');
 });

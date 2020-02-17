@@ -23,4 +23,9 @@ class IndexController extends Controller
 
         return redirect('admin/login');
     }
+
+    //没有权限页面
+    public function noaccess(){
+        return view('admin/errors/noaccess');
+    }
 }
