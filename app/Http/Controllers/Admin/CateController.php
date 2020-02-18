@@ -16,7 +16,7 @@ class CateController extends Controller
     public function index()
     {
 
-        $cate = Category::paginate(10);
+        $cate = Category::orderBy('cate_order','asc')->paginate(15);
         $cates = [];
         foreach ($cate as $value){
             if($value->cate_pid == 0){
@@ -26,7 +26,7 @@ class CateController extends Controller
         foreach($cates as $v){
             $v['childs'] =[];
             $arr = [];
-            $category = Category::all();
+            $category = Category::orderBy('cate_order','asc')->get();
             foreach($category as $vs){
                 if ($vs->cate_pid == $v->cate_id){
                     $arr[]= $vs;
@@ -175,7 +175,8 @@ class CateController extends Controller
     public function destroy($id)
     {
         //
-        if (Category::destroy($id)){
+
+        if (Category::where('cate_id',$id)->delete()){
             $data=[
                 'status' => 0,
                 'message' => '删除成功'
@@ -201,6 +202,28 @@ class CateController extends Controller
             $data=[
                 'status' => 1,
                 'message'=> '删除失败'
+            ];
+        }
+
+        return $data;
+    }
+
+    //分类排序
+    public function order(Request $request){
+        $input = $request->all();
+
+        $cate = Category::find($input['cate_id']);
+
+        $res = $cate->update(['cate_order' => $input['cate_order']]);
+        if ($res){
+            $data = [
+                'status' => 0,
+                'msg' => '修改排序成功'
+            ];
+        }else{
+            $data = [
+                'status' => 1,
+                'msg' => '修改排序失败'
             ];
         }
 

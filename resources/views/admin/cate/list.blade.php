@@ -80,20 +80,20 @@
 								{{$v->cate_name}}
 							</td>
 							<td>{{$v->cate_title}}</td>
-							<td><input type="text" class="layui-input x-sort" name="cate_order" value="{{$v->cate_order}}"></td>
+							<td><input type="text" onchange="changeOrder(this,{{$v->cate_id}})" class="layui-input x-sort" name="cate_order" value="{{$v->cate_order}}"></td>
 							<td>
 								<input type="checkbox" name="switch"  lay-text="开启|停用"  checked="" lay-skin="switch">
 							</td>
 							<td class="td-manage">
 								<button class="layui-btn layui-btn layui-btn-xs"  onclick="xadmin.open('编辑','{{url('admin/cate/'.$v->cate_id.'/edit')}}')" ><i class="layui-icon">&#xe642;</i>编辑</button>
 								<button class="layui-btn layui-btn-warm layui-btn-xs"  onclick="xadmin.open('编辑','{{url('admin/cate/create/'.$v->cate_id)}}')" ><i class="layui-icon">&#xe642;</i>添加子栏目</button>
-								<button class="layui-btn-danger layui-btn layui-btn-xs"  onclick="member_del(this,'{{$v->cate_id}}')" href="javascript:;" ><i class="layui-icon">&#xe640;</i>删除</button>
+								<button class="layui-btn-danger layui-btn layui-btn-xs"  onclick="member_del_p(this,'{{$v->cate_id}}')" href="javascript:;" ><i class="layui-icon">&#xe640;</i>删除</button>
 							</td>
 						</tr>
 							@foreach($v->childs as $k)
 								<tr cate-id='{{$k->cate_id}}' fid='{{$v->cate_id}}' >
 									<td>
-										<input type="checkbox" name="del " value="{{$v->cate_id}}" lay-skin="primary">
+										<input type="checkbox" name="del " value="{{$k->cate_id}}" lay-skin="primary">
 									</td>
 									<td>{{$k->cate_id}}</td>
 									<td>
@@ -104,13 +104,13 @@
 										{{$k->cate_name}}
 									</td>
 									<td>{{$k->cate_title}}</td>
-									<td><input type="text" class="layui-input x-sort" name="cate_order" value="{{$k->cate_order}}"></td>
+									<td><input type="text" class="layui-input x-sort" onchange="changeOrder(this,{{$k->cate_id}})" name="cate_order" value="{{$k->cate_order}}"></td>
 									<td>
 										<input type="checkbox" name="switch"  lay-text="开启|停用"  checked="" lay-skin="switch">
 									</td>
 									<td class="td-manage">
 										<button class="layui-btn layui-btn layui-btn-xs"  onclick="xadmin.open('编辑','{{url('admin/cate/'.$v->cate_id.'/edit')}}')" ><i class="layui-icon">&#xe642;</i>编辑</button>
-										<button class="layui-btn-danger layui-btn layui-btn-xs"  onclick="member_del(this,'{{$v->cate_id}}')" href="javascript:;" ><i class="layui-icon">&#xe640;</i>删除</button>
+										<button class="layui-btn-danger layui-btn layui-btn-xs"  onclick="member_del(this,'{{$k->cate_id}}')" href="javascript:;" ><i class="layui-icon">&#xe640;</i>删除</button>
 									</td>
 								</tr>
 							@endforeach
@@ -178,8 +178,8 @@
 
 	});
 
-	/*用户-删除*/
-	function member_del(obj,id){
+	/*父类-删除*/
+	function member_del_p(obj,id){
 		layer.confirm('确认要删除吗？',function(index){
 			//发异步删除数据
 			$.post('{{url('admin/cate')}}' + '/' + id, {
@@ -197,7 +197,25 @@
 			});
 		});
 	}
+	/*子类-删除*/
+	function member_del(obj,id){
+		layer.confirm('确认要删除吗？',function(index){
+			//发异步删除数据
+			$.post('{{url('admin/cate')}}' + '/' + id, {
+				"_method": "delete",
+				"_token": "{{csrf_token()}}"
+			}, function (data) {
+				if (data.status == 0) {
 
+					layer.msg(data.message, {icon: 6, time: 1000}, function () {
+						location.reload();
+					});
+				} else {
+					layer.msg(data.message, {icon: 6})
+				}
+			});
+		});
+	}
 	function delAll(argument) {
 		var ids = [];
 
@@ -223,6 +241,26 @@
 			// $(".layui-form-checked").not('.header').parents('tr').remove();
 		});
 	}
+
+	//排序
+	function changeOrder(obj,id){
+
+		// 获取当前文本框的值（修改后的排序值）
+		var order_id = $(obj).val();
+		console.log(order_id);
+
+		$.post('{{url('admin/cate/order')}}',{'_token':"{{csrf_token()}}","cate_id":id,"cate_order":order_id},function(data){
+			// console.log(data);
+			if(data.status == 0){
+				layer.msg(data.msg,{icon:6},function(){
+					location.reload();
+				});
+			}else{
+				layer.msg(data.msg,{icon:5});
+			}
+		});
+	}
+
 	// 分类展开收起的分类的逻辑
 	//
 	$(function(){
@@ -245,7 +283,7 @@
 				}
 			}
 		})
-	})
+	});
 
 	var cateIds = [];
 	function getCateId(cateId) {

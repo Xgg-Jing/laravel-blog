@@ -77,4 +77,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => ['isLo
 
     //批量删除分类路由
     Route::post('cate/del','CateController@delAll');
+
+    //分类排序类路由
+    Route::post('cate/order','CateController@order');
+
+    //文章相关路由
+    Route::resource('article','ArticleController');
+
+    //图片上传路由
+    Route::post('article/upload','ArticleController@upload');
 });

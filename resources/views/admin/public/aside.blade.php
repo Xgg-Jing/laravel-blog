@@ -61,6 +61,19 @@
                     </li>
                 </ul>
             </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="文章管理">&#xe723;</i>
+                    <cite>文章管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('文章列表','{{url('admin/article')}}')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>文章列表</cite></a>
+                    </li>
+                </ul>
+            </li>
 
             <li>
                 <a href="javascript:;">
