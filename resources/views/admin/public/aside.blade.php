@@ -8,7 +8,7 @@
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('统计页面','welcome1.html')">
+                        <a onclick="xadmin.add_tab('统计页面','{{url('admin/userWelcome')}}')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>统计页面</cite></a>
                     </li>
@@ -48,19 +48,7 @@
                 </ul>
             </li>
 
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="分类管理">&#xe723;</i>
-                    <cite>分类管理</cite>
-                    <i class="iconfont nav_right">&#xe697;</i></a>
-                <ul class="sub-menu">
-                    <li>
-                        <a onclick="xadmin.add_tab('多级分类','{{url('admin/cate')}}')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>多级分类</cite></a>
-                    </li>
-                </ul>
-            </li>
+
             <li>
                 <a href="javascript:;">
                     <i class="iconfont left-nav-li" lay-tips="文章管理">&#xe723;</i>
@@ -71,6 +59,19 @@
                         <a onclick="xadmin.add_tab('文章列表','{{url('admin/article')}}')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>文章列表</cite></a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="iconfont " lay-tips="分类管理">&#xe723;</i>
+                            <cite>分类管理</cite>
+                            <i class="iconfont nav_right">&#xe697;</i></a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a onclick="xadmin.add_tab('多级分类','{{url('admin/cate')}}')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>多级分类</cite></a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </li>

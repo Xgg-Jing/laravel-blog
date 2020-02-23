@@ -42,7 +42,7 @@ class LoginController extends Controller
         // 可以设置图片宽高及字体
         $builder->build($width = 100, $height = 40, $font = null);
         // 获取验证码的内容
-        $phrase = strtolower($builder->getPhrase());
+        $phrase = $builder->getPhrase();
         // 把内容存入session
         \Session::flash('code', $phrase);
         // 生成图片
@@ -89,7 +89,7 @@ class LoginController extends Controller
 //            return back()
 //                ->withErrors('验证码错误!');
 //        }
-        if ($input['code'] != session()->get('code')){
+        if (strtolower($input['code']) != strtolower(session()->get('code'))){
             return redirect('admin/login')->with('errors','验证码错误！');
 
         }

@@ -2,7 +2,7 @@
 <html class="x-admin-sm">
 <head>
     <meta charset="UTF-8">
-    <title>laravel博客后台登录-X-admin2.2</title>
+    <title>smd后台登录</title>
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
@@ -18,7 +18,7 @@
 <body class="login-bg">
 
 <div class="login layui-anim layui-anim-up">
-    <div class="message">laravel博客后台管理登录</div>
+    <div class="message">smd后台管理登录</div>
     <div id="darkbannerwrap"></div>
     @if (count($errors) > 0)
         <div class="alert alert-danger">
