@@ -11,12 +11,16 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
+    //前台分组
+Route::get('/user','User\UserController@index');
+Route::get('/article','User\UserController@article');
+Route::get('/diary','User\UserController@diary');
+Route::get('/link','User\UserController@link');
+Route::get('/message','User\UserController@message');
+Route::get('/read','User\UserController@read');
 
-//后台分组
+    //后台登录分组
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
 
     //后台登录页
@@ -38,9 +42,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
 
 });
 
-    //没有权限页面
+    //errors没有权限的页面
     Route::get('noaccess','Admin\IndexController@noaccess');
 
+
+    //后台界面分组
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => ['isLogin',]], function () {
     //后台首页
     Route::get('index','IndexController@index');

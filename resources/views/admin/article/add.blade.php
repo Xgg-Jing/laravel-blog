@@ -15,8 +15,8 @@
 
 <body>
 <div class="x-body">
-    <form class="layui-form" id="art_form" action="{{ url('admin/article') }}" method="post">
-        {{--            {{ csrf_field() }}--}}
+    <form class="layui-form" id="art_form" >
+                    {{ csrf_field() }}
         <div class="layui-form-item">
             <label for="L_email" class="layui-form-label">
                 <span class="x-red">*</span>分类
@@ -56,19 +56,15 @@
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">缩略图</label>
             <div class="layui-input-block layui-upload">
-                <input type="file" hidden id="input_id" class="hidden" onchange="return upload('input_id','images','preview_id');" name="art_thumb" value="">
+                <input type="text" name="art_thumb" hidden value="">
+                <input type="file" hidden id="input_id" class="hidden" onchange="return upload('input_id','images','preview_id');" name="art_thumb_f" >
                 <img id="preview_id" src="/upload/tianjia.jfif" onclick="$('#input_id').click()"
                      style="height: 150px">
             </div>
         </div>
 
 
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label"></label>
-            <div class="layui-input-block">
-                <img src="" alt="" id="art_thumb_img" style="max-width: 350px; max-height:100px;">
-            </div>
-        </div>
+
         <div class="layui-form-item">
             <label for="L_art_tag" class="layui-form-label">
                 <span class="x-red">*</span>关键词
@@ -115,10 +111,10 @@
 
                 <script id="editor" type="text/plain" name="art_content" style="width:600px;height:300px;"></script>
                 <script type="text/javascript">
-
                     //实例化编辑器
                     //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
                     var ue = UE.getEditor('editor');
+
                 </script>
 
             </div>
@@ -176,12 +172,14 @@
                     // 如果成功
                     {{--$('#art_thumb_img').attr('src', '{{ env('ALIOSS_DOMAIN')  }}'+data['ResultData']);--}}
                     {{--$('#art_thumb_img').attr('src', '{{ env('QINIU_DOMAIN')  }}'+data['ResultData']);--}}
-                    $('#preview_id').attr('src', '/upload/' + data.img);
-                    $('input[name=art_thumb]').val('/upload/' + data.img);
+
+                    $('#preview_id').attr('src', data.img);
+                    $("input[name='art_thumb']").val(data.img);
+
                     $(obj).off('change');
                 } else {
                     // 如果失败
-                    alert(data.msg);
+                    layer.msg(data.msg, {icon: 5})
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -203,48 +201,44 @@
 
 
 
-        $('#test1').on('click', function () {
-            $('#photo_upload').trigger('click');
-            $('#photo_upload').on('change', function () {
-                var obj = this;
 
-                var formData = new FormData($('#art_form')[0]);
-                $.ajax({
-                    url: '/admin/article/upload',
-                    type: 'post',
-                    data: formData,
-                    // 因为data值是FormData对象，不需要对数据做处理
-                    processData: false,
-                    contentType: false,
-                    success: function (data) {
-                        if (data['ServerNo'] == '200') {
-                            // 如果成功
-                            {{--$('#art_thumb_img').attr('src', '{{ env('ALIOSS_DOMAIN')  }}'+data['ResultData']);--}}
-                            {{--$('#art_thumb_img').attr('src', '{{ env('QINIU_DOMAIN')  }}'+data['ResultData']);--}}
-                            $('#art_thumb_img').attr('src', '/uploads/' + data['ResultData']);
-                            $('input[name=art_thumb]').val('/uploads/' + data['ResultData']);
-                            $(obj).off('change');
-                        } else {
-                            // 如果失败
-                            alert(data['ResultData']);
-                        }
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        var number = XMLHttpRequest.status;
-                        var info = "错误号" + number + "文件上传失败!";
-                        // 将菊花换成原图
-                        // $('#pic').attr('src', '/file.png');
-                        alert(info);
-                    },
-                    async: true
-                });
-            });
-
-        });
 
         //监听提交
         form.on('submit(add)', function (data) {
-                console.log('sss');
+
+
+            console.log(ue.getContent());
+           var art_content = ue.getContent();
+            $.ajax({
+                url: '{{url('admin/article')}}',
+                type: 'post',
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: data.field,
+                success: function (data) {
+
+                    if (data.status == 0) {
+                        layer.msg(data.message, {icon: 6}, function () {
+                            parent.location.reload(true);
+                        })
+                    } else {
+                        layer.msg(data.message, {icon: 5})
+                    }
+                }
+            });
+            // layer.alert("增加成功", {
+            //     icon: 6
+            // },
+            // function() {
+            //     //关闭当前frame
+            //     xadmin.close();
+            //
+            //     // 可以对父窗口进行刷新
+            //     xadmin.father_reload();
+            // });
+            return false;
         });
 
 

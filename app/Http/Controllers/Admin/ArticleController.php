@@ -71,6 +71,7 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         //
+        dd($request->all());
     }
 
     /**
@@ -122,32 +123,46 @@ class ArticleController extends Controller
     public function upload(Request $request){
 
         //获取上传文件
-       $file =  $request->file('art_thumb');
+       $file =  $request->file('art_thumb_f');
 
        //判断上传文件是否成功
         if (!$file->isValid()){
             return response()->json(['status' => 1, 'msg' => '无效上传文件']);
         }
+        //判断文件大小不能超过1M
+        $file_size = $file->getClientSize();
 
+        if ( $file_size > 1024*1024) {
+            return response()->json(['status' => 2, 'msg' => '请注意上传文件不能超过1M']);
+
+        }
         //获取文件拓展名
         $ext = $file->getClientOriginalExtension();
+
+        //建上传当天文件夹
+        $public_dir = sprintf('/upload/%s/%s/', 'images', date('Y-m-d') );
+        $upload_dir = public_path() . $public_dir;
+
+        if( !file_exists($upload_dir) ) {
+            mkdir($upload_dir, 0777, true);
+        }
 
         //新文件名
         $newfile = md5(time().rand(1000,9999)).'.'.$ext;
 
         //文件上传指定路径
-        $path = public_path('upload');
+//        $upload_dir = public_path() . $public_dir;
 
         //将文件移动至指定目录
 //        if (!$file->move($path,$newfile)){
 ////            return response()->json(['status' => 1, 'msg' => '文件保存失败']);
 ////        }
         //image图片处理组件
-        $res = Image::make($file)->resize(100,100)->save($path.'/'.$newfile);
+        $res = Image::make($file)->resize(100,100)->save($upload_dir.'/'.$newfile);
 
         if ($res){
             //文件上传成功
-            return response()->json(['status' => 0, 'msg' => '文件上传成功', 'img' =>$newfile]);
+            return response()->json(['status' => 0, 'msg' => '文件上传成功', 'img' =>$public_dir.$newfile]);
         }else{
             return response()->json(['status' => 1, 'msg' => '文件保存失败']);
         }
